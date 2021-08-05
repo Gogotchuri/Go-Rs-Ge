@@ -50,6 +50,12 @@ func (gir *GetInvoiceRequest) getXML() (*bytes.Buffer, error) {
 	return getXMLBytes(gir)
 }
 
+type GetBuyerInvoicesRequest struct {
+	BaseRequest
+	BaseAuthorizedRequest
+	XMLName xml.Name `xml:"get_buyer_invoices"`
+}
+
 // ------------  Users  -----------------
 type CredentialCheckRequest struct {
 	BaseRequest

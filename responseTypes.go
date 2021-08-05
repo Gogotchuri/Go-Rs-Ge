@@ -13,6 +13,11 @@ type checkResponse struct {
 	CredentialCheck CredentialCheck `xml:"Body>chekResponse"`
 }
 
+type getBuyerInvoicesResponse struct {
+	XMLName  xml.Name   `xml:"http://schemas.xmlsoap.org/soap/envelope/ Envelope"`
+	Invoices []*Invoice `xml:"Body>get_buyer_invoicesResponse>get_buyer_invoicesResult>diffgram>DocumentElement>invoices"`
+}
+
 // type SOAPBodyResponse struct {
 // 	XMLName      xml.Name `xml:"Body"`
 // 	Resp         *ResponseBody
