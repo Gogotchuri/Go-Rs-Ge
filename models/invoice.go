@@ -1,14 +1,4 @@
-package gorsge
-
-type RsGeClient struct {
-	ServiceUser     string
-	ServicePassword string
-	UserID          int
-}
-
-type Operation string
-type DeclarationStatus int
-type InvoiceStatus int
+package models
 
 type Invoice struct {
 	ID               int    `xml:"id"`
@@ -41,10 +31,4 @@ type Invoice struct {
 	WasRefused         bool              `xml:"was_ref"`
 	CorrectedInvoiceID int               `xml:"k_id"`
 	CorrectionType     int               `xml:"k_type"`
-}
-
-type CredentialCheck struct {
-	Result bool `xml:"chekResult"`
-	UserID int  `xml:"user_id"`
-	Sua    int  `xml:"sua"`
 }

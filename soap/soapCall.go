@@ -1,4 +1,4 @@
-package gorsge
+package soap
 
 import (
 	"bytes"
@@ -7,10 +7,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"text/template"
+
 )
 
-//getXMLBytes does heavy lifing here
-func getXMLBytes(req XMLRequest) (*bytes.Buffer, error) {
+//GetXMLBytes does heavy lifing here
+func GetXMLBytes(req XMLRequest) (*bytes.Buffer, error) {
 	marshalledXML, err := xml.MarshalIndent(req, " ", "  ")
 	if err != nil {
 		fmt.Println("Marshalling error", err.Error())
@@ -46,13 +47,13 @@ func getXMLBytes(req XMLRequest) (*bytes.Buffer, error) {
 	return bytes.NewBuffer(doc.Bytes()), nil
 }
 
-func generateSOAPRequest(req XMLRequest) (*http.Request, error) {
-	buffer, err := req.getXML()
+func GenerateSOAPRequest(req XMLRequest) (*http.Request, error) {
+	buffer, err := req.GetXML()
 	if err != nil {
 		fmt.Printf("Error getting xml from request. %s \n", err.Error())
 		return nil, err
 	}
-	r, err := http.NewRequest(http.MethodPost, req.getEndpointURL(), buffer)
+	r, err := http.NewRequest(http.MethodPost, req.GetEndpointURL(), buffer)
 	if err != nil {
 		fmt.Printf("Error making a request. %s ", err.Error())
 		return nil, err
@@ -64,8 +65,8 @@ func generateSOAPRequest(req XMLRequest) (*http.Request, error) {
 	return r, nil
 }
 
-//soapCall make a soap call given formed http request and resp to unmarshall into
-func soapCall(req *http.Request, dest interface{}) (interface{}, error) {
+//SoapCall make a soap call given formed http request and resp to unmarshall into
+func SoapCall(req *http.Request, dest interface{}) (interface{}, error) {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {

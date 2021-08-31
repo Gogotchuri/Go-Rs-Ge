@@ -1,22 +1,6 @@
 package gorsge
 
-import "encoding/xml"
-
 //Responses
-type invoiceResponse struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Envelope"`
-	Invoice Invoice  `xml:"Body>get_invoiceResponse"`
-}
-
-type checkResponse struct {
-	XMLName         xml.Name        `xml:"http://schemas.xmlsoap.org/soap/envelope/ Envelope"`
-	CredentialCheck CredentialCheck `xml:"Body>chekResponse"`
-}
-
-type getBuyerInvoicesResponse struct {
-	XMLName  xml.Name   `xml:"http://schemas.xmlsoap.org/soap/envelope/ Envelope"`
-	Invoices []*Invoice `xml:"Body>get_buyer_invoicesResponse>get_buyer_invoicesResult>diffgram>DocumentElement>invoices"`
-}
 
 // type SOAPBodyResponse struct {
 // 	XMLName      xml.Name `xml:"Body"`

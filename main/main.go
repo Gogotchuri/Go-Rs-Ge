@@ -2,20 +2,20 @@ package main
 
 import (
 	"fmt"
-
-	gorsge "github.com/gogotchuri/go-rs-ge"
+	"github.com/gogotchuri/go-rs-ge/rs"
 )
 
 func main() {
-	rs := &gorsge.RsGeClient{
-		ServiceUser:     "giorgi kernel:405368212",
-		ServicePassword: "GIORGIKERNEL",
-		UserID:          1464390,
+	rs := &rs.Client{
+		ServiceUser:     "beka:405217420",
+		ServicePassword: "RT1234",
+		UserID:          0,
 	}
-	resp, err := rs.CheckCredentials()
+	resp, err := rs.GetUniqueID()
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
 	fmt.Println(resp)
+	fmt.Println(rs)
 }
