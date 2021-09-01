@@ -13,10 +13,26 @@ type InvoiceSearchFilters struct {
 	Desc       string
 }
 
+type InvoiceItem struct {
+	ID        int    `xml:"ID"`
+	InvoiceID int    `xml:"INV_ID"`
+	Name      string `xml:"GOODS"`
+
+	Unit     string  `xml:"G_UNIT"`
+	Quantity float64 `xml:"G_NUMBER"`
+
+	TotalAmount  float64 `xml:"FULL_AMOUNT"`
+	VATAmount    float64 `xml:"DRG_AMOUNT"`
+	SVATAmount   float64 `xml:"SDRG_AMOUNT"`
+	ExciseAmount float64 `xml:"AQCIZI_AMOUNT"`
+
+	ExciseID  int `xml:"AKCIS_ID"`
+	WaybillID int `xml:"WAYBILL_ID"`
+}
+
 type Invoice struct {
 	ID               int    `xml:"ID"`
 	Status           string `xml:"STATUS"`
-	InvoiceID        int    `xml:"INVOIS_ID"`
 	InvoiceSeries    string `xml:"F_SERIES"`
 	InvoiceNumberF   int    `xml:"F_NUMBER"`
 	OperationDate    string `xml:"OPERATION_DT"`
@@ -44,4 +60,64 @@ type Invoice struct {
 	WasRefused         bool              `xml:"WAS_REF"`
 	CorrectedInvoiceID int               `xml:"K_ID"`
 	CorrectionType     int               `xml:"K_TYPE"`
+}
+
+type InvoiceSingle struct {
+	ID               int    `xml:"id"`
+	Status           string `xml:"status"`
+	InvoiceSeries    string `xml:"f_series"`
+	InvoiceNumberF   int    `xml:"f_number"`
+	OperationDate    string `xml:"operation_dt"`
+	RegistrationDate string `xml:"reg_dt"`
+
+	Amount float64 `xml:"tanxa"`
+	VAT    float64 `xml:"vat"`
+
+	AgreementDate string `xml:"agree_date"`
+	AgreedByUser  int    `xml:"agree_s_user_id"`
+
+	BuyerUID              int    `xml:"buyer_un_id"`
+	BuyerServiceUserID    int    `xml:"b_s_user_id"`
+	BuyerSequentialNumber string `xml:"seq_num_b"`
+	BuyerTaxID            int    `xml:"sa_ident_no"`
+	BuyerName             string `xml:"org_name"`
+
+	SellerUID              int    `xml:"seller_un_id"`
+	SellerSequentialNumber string `xml:"seq_num_s"`
+	ServiceUserID          int    `xml:"s_user_id"`
+
+	CancellerUID int `xml:"r_un_id"`
+
+	DeclarationStatus  DeclarationStatus `xml:"dec_status"`
+	WasRefused         bool              `xml:"was_ref"`
+	CorrectedInvoiceID int               `xml:"k_id"`
+	CorrectionType     int               `xml:"k_type"`
+}
+
+func (inv *InvoiceSingle) GetInvoice() *Invoice {
+	return &Invoice{
+		ID:                     inv.ID,
+		Status:                 inv.Status,
+		InvoiceSeries:          inv.InvoiceSeries,
+		InvoiceNumberF:         inv.InvoiceNumberF,
+		OperationDate:          inv.OperationDate,
+		RegistrationDate:       inv.RegistrationDate,
+		Amount:                 inv.Amount,
+		VAT:                    inv.VAT,
+		AgreementDate:          inv.AgreementDate,
+		AgreedByUser:           inv.AgreedByUser,
+		BuyerUID:               inv.BuyerUID,
+		BuyerServiceUserID:     inv.BuyerServiceUserID,
+		BuyerSequentialNumber:  inv.BuyerSequentialNumber,
+		BuyerTaxID:             inv.BuyerTaxID,
+		BuyerName:              inv.BuyerName,
+		SellerUID:              inv.SellerUID,
+		SellerSequentialNumber: inv.SellerSequentialNumber,
+		ServiceUserID:          inv.ServiceUserID,
+		CancellerUID:           inv.CancellerUID,
+		DeclarationStatus:      inv.DeclarationStatus,
+		WasRefused:             inv.WasRefused,
+		CorrectedInvoiceID:     inv.CorrectedInvoiceID,
+		CorrectionType:         inv.CorrectionType,
+	}
 }

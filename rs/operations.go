@@ -2,12 +2,55 @@ package rs
 
 import (
 	"fmt"
-
 	"github.com/gogotchuri/go-rs-ge/models"
 	"github.com/gogotchuri/go-rs-ge/requests"
 	"github.com/gogotchuri/go-rs-ge/responses"
 	"github.com/gogotchuri/go-rs-ge/soap"
 )
+
+func (rs *Client) GetAllCustomers(filters *models.InvoiceSearchFilters) ([]models.Customer, error) {
+	invoices, err := rs.GetSellerInvoices(filters)
+	if err != nil {
+		return nil, err
+	}
+	customersMap := make(map[int]*models.Customer, 0)
+
+	for _, inv := range invoices {
+		customer, err := rs.GetCustomer(inv.BuyerUID)
+		if err != nil {
+			continue //TODO consider crashing
+		}
+		customersMap[customer.TIN] = customer
+	}
+	customers := make([]models.Customer, 0, len(customersMap))
+	for _, v := range customersMap {
+		customers = append(customers, *v)
+	}
+	return customers, nil
+}
+
+func (rs *Client) GetAllProducts(filters *models.InvoiceSearchFilters) ([]models.InvoiceItem, error) {
+	invoices, err := rs.GetSellerInvoices(filters)
+	if err != nil {
+		return nil, err
+	}
+	productsMap := make(map[string]models.InvoiceItem, 0)
+
+	for _, inv := range invoices {
+		items, err := rs.GetInvoiceItems(inv.ID)
+		if err != nil {
+			continue //TODO consider crashing
+		}
+		for _, item := range items{
+			productsMap[item.Name] = item
+		}
+	}
+	products := make([]models.InvoiceItem, 0, len(productsMap))
+	for _, v := range productsMap {
+		products = append(products, v)
+	}
+	return products, nil
+}
 
 func (rs *Client) GetBuyerInvoices(filters *models.InvoiceSearchFilters) ([]models.Invoice, error) {
 	gir := &requests.GetBuyerInvoicesRequest{}
@@ -23,13 +66,13 @@ func (rs *Client) GetBuyerInvoices(filters *models.InvoiceSearchFilters) ([]mode
 		fmt.Println("Generating request:", err.Error())
 		return nil, err
 	}
-	ir := &responses.InvoiceResponse{}
+	ir := &responses.GetBuyerInvoicesResponse{}
 	_, err = soap.SoapCall(req, ir)
 	if err != nil {
 		fmt.Println("Making call", err.Error())
 		return nil, err
 	}
-	return nil, nil
+	return ir.Invoices, nil
 }
 
 func (rs *Client) GetSellerInvoices(filters *models.InvoiceSearchFilters) ([]models.Invoice, error) {
@@ -73,8 +116,54 @@ func (rs *Client) GetInvoice(invoiceID int) (*models.Invoice, error) {
 		fmt.Println("Making call", err.Error())
 		return nil, err
 	}
-	ir.Invoice.InvoiceID = invoiceID
-	return &ir.Invoice, nil
+	ir.Invoice.ID = invoiceID
+	return ir.Invoice.GetInvoice(), nil
+}
+
+func (rs *Client) GetInvoiceItems(invoiceID int) ([]models.InvoiceItem, error) {
+	giir := &requests.GetInvoiceItemsRequest{
+		InvoiceID: invoiceID,
+	}
+	giir.ServiceUser = rs.ServiceUser
+	giir.ServicePassword = rs.ServicePassword
+	giir.UserID = rs.UserID
+	giir.UniqueID = rs.UniqueID
+	req, err := soap.GenerateSOAPRequest(giir)
+	if err != nil {
+		fmt.Println("Generating request:", err.Error())
+		return nil, err
+	}
+	ir := &responses.GetInvoiceItemsResponse{}
+	_, err = soap.SoapCall(req, ir)
+	if err != nil {
+		fmt.Println("Making call", err.Error())
+		return nil, err
+	}
+	return ir.InvoiceItems, nil
+}
+
+func (rs *Client) GetCustomer(uniqueID int)  (*models.Customer, error) {
+	return rs.GetTINFromUniqueID(uniqueID)
+}
+
+func (rs *Client) GetTINFromUniqueID(uniqueID int) (*models.Customer, error) {
+	gtr := &requests.GetTINRequest{}
+	gtr.ServiceUser = rs.ServiceUser
+	gtr.ServicePassword = rs.ServicePassword
+	gtr.UserID = rs.UserID
+	gtr.UniqueID = uniqueID
+	req, err := soap.GenerateSOAPRequest(gtr)
+	if err != nil {
+		fmt.Println("Generating request:", err.Error())
+		return nil, err
+	}
+	ir := &responses.GetTINResponse{}
+	_, err = soap.SoapCall(req, ir)
+	if err != nil {
+		fmt.Println("Making call", err.Error())
+		return nil, err
+	}
+	return &ir.Customer, nil
 }
 
 func (rs *Client) CheckCredentials() (*models.CredentialCheck, error) {

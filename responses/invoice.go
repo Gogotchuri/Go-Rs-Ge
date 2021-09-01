@@ -6,5 +6,5 @@ import (
 
 type InvoiceResponse struct {
 	XMLResponse
-	Invoice models.Invoice `xml:"Body>get_invoiceResponse"`
+	Invoice models.InvoiceSingle `xml:"Body>get_invoiceResponse"`
 }
