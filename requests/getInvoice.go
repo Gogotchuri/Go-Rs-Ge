@@ -3,6 +3,7 @@ package requests
 import (
 	"bytes"
 	"encoding/xml"
+
 	"github.com/gogotchuri/go-rs-ge/soap"
 )
 

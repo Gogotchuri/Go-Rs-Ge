@@ -1,34 +1,47 @@
 package models
 
+import "time"
+
+type InvoiceSearchFilters struct {
+	StartDate          time.Time
+	EndDate            time.Time
+	OperationStartDate time.Time
+	OperationEndDate   time.Time
+
+	InvoiceNo  string
+	CompanyTIN string
+	Desc       string
+}
+
 type Invoice struct {
-	ID               int    `xml:"id"`
-	Status           string `xml:"status"`
-	InvoiceID        int    `xml:"invois_id"`
-	InvoiceSeries    string `xml:"f_series"`
-	InvoiceNumberF   int    `xml:"f_number"`
-	OperationDate    string `xml:"operation_dt"`
-	RegistrationDate string `xml:"reg_dt"`
+	ID               int    `xml:"ID"`
+	Status           string `xml:"STATUS"`
+	InvoiceID        int    `xml:"INVOIS_ID"`
+	InvoiceSeries    string `xml:"F_SERIES"`
+	InvoiceNumberF   int    `xml:"F_NUMBER"`
+	OperationDate    string `xml:"OPERATION_DT"`
+	RegistrationDate string `xml:"REG_DT"`
 
-	Amount float64 `xml:"tanxa"`
-	VAT    float64 `xml:"vat"`
+	Amount float64 `xml:"TANXA"`
+	VAT    float64 `xml:"VAT"`
 
-	AgreementDate string `xml:"agree_date"`
-	AgreedByUser  int    `xml:"agree_s_user_id"`
+	AgreementDate string `xml:"AGREE_DATE"`
+	AgreedByUser  int    `xml:"AGREE_S_USER_ID"`
 
-	BuyerUID              int    `xml:"buyer_un_id"`
-	BuyerServiceUserID    int    `xml:"b_s_user_id"`
-	BuyerSequentialNumber string `xml:"seq_num_b"`
-	BuyerTaxID            int    `xml:"sa_ident_no"`
-	BuyerName             string `xml:"org_name"`
+	BuyerUID              int    `xml:"BUYER_UN_ID"`
+	BuyerServiceUserID    int    `xml:"B_S_USER_ID"`
+	BuyerSequentialNumber string `xml:"SEQ_NUM_B"`
+	BuyerTaxID            int    `xml:"SA_IDENT_NO"`
+	BuyerName             string `xml:"ORG_NAME"`
 
-	SellerUID              int    `xml:"seller_un_id"`
-	SellerSequentialNumber string `xml:"seq_num_s"`
-	ServiceUserID          int    `xml:"s_user_id"`
+	SellerUID              int    `xml:"SELLER_UN_ID"`
+	SellerSequentialNumber string `xml:"SEQ_NUM_S"`
+	ServiceUserID          int    `xml:"S_USER_ID"`
 
-	CancellerUID int `xml:"r_un_id"`
+	CancellerUID int `xml:"R_UN_ID"`
 
-	DeclarationStatus  DeclarationStatus `xml:"dec_status"`
-	WasRefused         bool              `xml:"was_ref"`
-	CorrectedInvoiceID int               `xml:"k_id"`
-	CorrectionType     int               `xml:"k_type"`
+	DeclarationStatus  DeclarationStatus `xml:"DEC_STATUS"`
+	WasRefused         bool              `xml:"WAS_REF"`
+	CorrectedInvoiceID int               `xml:"K_ID"`
+	CorrectionType     int               `xml:"K_TYPE"`
 }

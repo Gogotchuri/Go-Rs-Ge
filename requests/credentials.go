@@ -3,12 +3,12 @@ package requests
 import (
 	"bytes"
 	"encoding/xml"
+
 	"github.com/gogotchuri/go-rs-ge/soap"
 )
 
 var _ soap.XMLRequest = &GetUniqueIDRequest{}
 var _ soap.XMLRequest = &CredentialCheckRequest{}
-
 
 //GetUniqueIDRequest for operation GetUnIDFromUserID
 type GetUniqueIDRequest struct {

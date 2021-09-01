@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"text/template"
-
 )
 
 //GetXMLBytes does heavy lifing here
@@ -17,7 +16,6 @@ func GetXMLBytes(req XMLRequest) (*bytes.Buffer, error) {
 		fmt.Println("Marshalling error", err.Error())
 		return nil, err
 	}
-	fmt.Println(string(marshalledXML))
 	// Using the var getTemplate to construct request
 	template, err := template.New("XMLRequest").Parse(RsGeXMLTemplate)
 	if err != nil {
@@ -72,13 +70,11 @@ func SoapCall(req *http.Request, dest interface{}) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-
 	err = xml.Unmarshal(body, dest)
 
 	if err != nil {

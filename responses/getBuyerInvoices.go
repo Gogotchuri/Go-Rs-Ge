@@ -6,5 +6,5 @@ import (
 
 type GetBuyerInvoicesResponse struct {
 	XMLResponse
-	Invoices []*models.Invoice `xml:"Body>get_buyer_invoicesResponse>get_buyer_invoicesResult>diffgram>DocumentElement>invoices"`
+	Invoices []models.Invoice `xml:"Body>get_buyer_invoicesResponse>get_buyer_invoicesResult>diffgram>DocumentElement>invoices"`
 }
