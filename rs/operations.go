@@ -2,6 +2,7 @@ package rs
 
 import (
 	"fmt"
+
 	"github.com/gogotchuri/go-rs-ge/models"
 	"github.com/gogotchuri/go-rs-ge/requests"
 	"github.com/gogotchuri/go-rs-ge/responses"
@@ -41,7 +42,7 @@ func (rs *Client) GetAllProducts(filters *models.InvoiceSearchFilters) ([]models
 		if err != nil {
 			continue //TODO consider crashing
 		}
-		for _, item := range items{
+		for _, item := range items {
 			productsMap[item.Name] = item
 		}
 	}
@@ -142,7 +143,7 @@ func (rs *Client) GetInvoiceItems(invoiceID int) ([]models.InvoiceItem, error) {
 	return ir.InvoiceItems, nil
 }
 
-func (rs *Client) GetCustomer(uniqueID int)  (*models.Customer, error) {
+func (rs *Client) GetCustomer(uniqueID int) (*models.Customer, error) {
 	return rs.GetTINFromUniqueID(uniqueID)
 }
 
@@ -164,6 +165,31 @@ func (rs *Client) GetTINFromUniqueID(uniqueID int) (*models.Customer, error) {
 		return nil, err
 	}
 	return &ir.Customer, nil
+}
+
+func (rs *Client) GetUniqueIDFromTIN(TIN int) (*models.CustomerM, error) {
+	guift := &requests.GetUniqueIDFromTINRequest{}
+	guift.ServiceUser = rs.ServiceUser
+	guift.ServicePassword = rs.ServicePassword
+	guift.UserID = rs.UserID
+	guift.TIN = TIN
+	req, err := soap.GenerateSOAPRequest(guift)
+	if err != nil {
+		fmt.Println("Generating request:", err.Error())
+		return nil, err
+	}
+	ir := &responses.GetUniqueIDFromTINResponse{}
+	_, err = soap.SoapCall(req, ir)
+	if err != nil {
+		fmt.Println("Making call", err.Error())
+		return nil, err
+	}
+
+	return &models.CustomerM{
+		TIN:      TIN,
+		Name:     ir.Name,
+		UniqueID: ir.UniqueID,
+	}, nil
 }
 
 func (rs *Client) CheckCredentials() (*models.CredentialCheck, error) {
