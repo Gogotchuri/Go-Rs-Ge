@@ -2,6 +2,26 @@ package models
 
 import "time"
 
+type SaveInvoiceItemT struct {
+	ID           int     `xml:"id"`
+	InvoiceID    int     `xml:"invois_id"`
+	Name         string  `xml:"goods"`
+	Unit         string  `xml:"g_unit"`
+	Quantity     float64 `xml:"g_number"`
+	TotalAmount  float64 `xml:"full_amount"`
+	VATAmount    float64 `xml:"drg_amount"`
+	ExciseAmount float64 `xml:"aqcizi_amount"`
+	ExciseID     int     `xml:"akciz_id"`
+}
+
+type SaveInvoiceT struct {
+	InvoiceID          int    `xml:"invois_id"`
+	OperationDate      string `xml:"operation_date"`
+	SellerUID          int    `xml:"seller_un_id"`
+	BuyerUID           int    `xml:"buyer_un_id"`
+	BuyerServiceUserID int    `xml:"b_s_user_id"`
+}
+
 type InvoiceSearchFilters struct {
 	StartDate          time.Time
 	EndDate            time.Time

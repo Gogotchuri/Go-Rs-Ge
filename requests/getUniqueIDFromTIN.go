@@ -13,7 +13,7 @@ type GetUniqueIDFromTINRequest struct {
 	BaseRequest
 	BaseAuthorizedRequest
 	TIN     int      `xml:"tin"`
-	XMLName xml.Name `xml:"get_tin_from_un_id"`
+	XMLName xml.Name `xml:"get_un_id_from_tin"`
 }
 
 func (uift *GetUniqueIDFromTINRequest) GetXML() (*bytes.Buffer, error) {
