@@ -51,12 +51,12 @@ type InvoiceItem struct {
 }
 
 type Invoice struct {
-	ID               int    `xml:"ID"`
-	Status           string `xml:"STATUS"`
-	InvoiceSeries    string `xml:"F_SERIES"`
-	InvoiceNumberF   int    `xml:"F_NUMBER"`
-	OperationDate    string `xml:"OPERATION_DT"`
-	RegistrationDate string `xml:"REG_DT"`
+	ID               int          `xml:"ID"`
+	Status           InvoiceSatus `xml:"STATUS"`
+	InvoiceSeries    string       `xml:"F_SERIES"`
+	InvoiceNumberF   int          `xml:"F_NUMBER"`
+	OperationDate    string       `xml:"OPERATION_DT"`
+	RegistrationDate string       `xml:"REG_DT"`
 
 	Amount float64 `xml:"TANXA"`
 	VAT    float64 `xml:"VAT"`
@@ -83,12 +83,12 @@ type Invoice struct {
 }
 
 type InvoiceSingle struct {
-	ID               int    `xml:"id"`
-	Status           string `xml:"status"`
-	InvoiceSeries    string `xml:"f_series"`
-	InvoiceNumberF   int    `xml:"f_number"`
-	OperationDate    string `xml:"operation_dt"`
-	RegistrationDate string `xml:"reg_dt"`
+	ID               int          `xml:"id"`
+	Status           InvoiceSatus `xml:"status"`
+	InvoiceSeries    string       `xml:"f_series"`
+	InvoiceNumberF   int          `xml:"f_number"`
+	OperationDate    string       `xml:"operation_dt"`
+	RegistrationDate string       `xml:"reg_dt"`
 
 	Amount float64 `xml:"tanxa"`
 	VAT    float64 `xml:"vat"`

@@ -1,7 +1,6 @@
 package models
 
 type DeclarationStatus int
-type InvoiceStatus int
 
 type CredentialCheck struct {
 	Result bool `xml:"chekResult"`

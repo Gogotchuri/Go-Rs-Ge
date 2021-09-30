@@ -107,7 +107,6 @@ func (rs *Client) SaveInvoice(toSave models.SaveInvoiceT) (int, error) {
 	sir.ServicePassword = rs.ServicePassword
 	sir.UserID = rs.UserID
 	req, err := soap.GenerateSOAPRequest(sir)
-	fmt.Println(req)
 	if err != nil {
 		fmt.Println("Generating request:", err.Error())
 		return 0, err
@@ -148,4 +147,33 @@ func (rs *Client) SaveInvoiceItem(toSave models.SaveInvoiceItemT) (int, error) {
 		return 0, fmt.Errorf("invoice item id returned 0 (not created)")
 	}
 	return ir.ID, nil
+}
+
+func (rs *Client) ChangeInvoiceStatus(invoiceID int, status models.InvoiceSatus) error {
+	cisr := &requests.ChangeInvoiceStatusRequest{
+		Status:    status,
+		InvoiceID: invoiceID,
+	}
+	cisr.ServiceUser = rs.ServiceUser
+	cisr.ServicePassword = rs.ServicePassword
+	cisr.UserID = rs.UserID
+	req, err := soap.GenerateSOAPRequest(cisr)
+	if err != nil {
+		fmt.Println("Generating request:", err.Error())
+		return err
+	}
+	ir := &responses.ChangeInvoiceStatusResponse{}
+	_, err = soap.SoapCall(req, ir)
+	if err != nil {
+		fmt.Println("Making call", err.Error())
+		return err
+	}
+	if !ir.Result {
+		return fmt.Errorf("status request change failed")
+	}
+	return nil
+}
+
+func (rs *Client) DeleteInvoice(invoiceID int) error {
+	return rs.ChangeInvoiceStatus(invoiceID, models.Deleted)
 }
