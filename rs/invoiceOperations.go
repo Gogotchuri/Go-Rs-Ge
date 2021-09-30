@@ -107,6 +107,7 @@ func (rs *Client) SaveInvoice(toSave models.SaveInvoiceT) (int, error) {
 	sir.ServicePassword = rs.ServicePassword
 	sir.UserID = rs.UserID
 	req, err := soap.GenerateSOAPRequest(sir)
+	fmt.Println(req)
 	if err != nil {
 		fmt.Println("Generating request:", err.Error())
 		return 0, err
@@ -117,7 +118,7 @@ func (rs *Client) SaveInvoice(toSave models.SaveInvoiceT) (int, error) {
 		fmt.Println("Making call", err.Error())
 		return 0, err
 	}
-	if ir.InvoiceID == 0 {
+	if ir.InvoiceID <= 0 {
 		return 0, fmt.Errorf("invoice id returned 0 (not created)")
 	}
 
@@ -132,6 +133,7 @@ func (rs *Client) SaveInvoiceItem(toSave models.SaveInvoiceItemT) (int, error) {
 	siir.ServicePassword = rs.ServicePassword
 	siir.UserID = rs.UserID
 	req, err := soap.GenerateSOAPRequest(siir)
+	fmt.Println(req)
 	if err != nil {
 		fmt.Println("Generating request:", err.Error())
 		return 0, err
@@ -142,6 +144,8 @@ func (rs *Client) SaveInvoiceItem(toSave models.SaveInvoiceItemT) (int, error) {
 		fmt.Println("Making call", err.Error())
 		return 0, err
 	}
-
+	if ir.ID <= 0 {
+		return 0, fmt.Errorf("invoice item id returned 0 (not created)")
+	}
 	return ir.ID, nil
 }
