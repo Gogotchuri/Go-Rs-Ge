@@ -132,7 +132,6 @@ func (rs *Client) SaveInvoiceItem(toSave models.SaveInvoiceItemT) (int, error) {
 	siir.ServicePassword = rs.ServicePassword
 	siir.UserID = rs.UserID
 	req, err := soap.GenerateSOAPRequest(siir)
-	fmt.Println(req)
 	if err != nil {
 		fmt.Println("Generating request:", err.Error())
 		return 0, err
