@@ -148,5 +148,8 @@ func (rs *Client) GetUniqueID() (int, error) {
 		return 0, err
 	}
 	rs.UniqueID = ir.UniqueID
+	if rs.UniqueID <= 0 {
+		return ir.UniqueID, fmt.Errorf("unique id is <= 0")
+	}
 	return ir.UniqueID, nil
 }
