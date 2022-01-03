@@ -14,7 +14,7 @@ func (rs *Client) GetAllCustomers(filters *models.InvoiceSearchFilters) ([]model
 	if err != nil {
 		return nil, err
 	}
-	customersMap := make(map[int]*models.Customer, 0)
+	customersMap := make(map[string]*models.Customer, 0)
 
 	for _, inv := range invoices {
 		customer, err := rs.GetCustomer(inv.BuyerUID)
@@ -77,7 +77,7 @@ func (rs *Client) GetTINFromUniqueID(uniqueID int) (*models.Customer, error) {
 	return &ir.Customer, nil
 }
 
-func (rs *Client) GetUniqueIDFromTIN(TIN int) (*models.CustomerM, error) {
+func (rs *Client) GetUniqueIDFromTIN(TIN string) (*models.CustomerM, error) {
 	guift := &requests.GetUniqueIDFromTINRequest{}
 	guift.ServiceUser = rs.ServiceUser
 	guift.ServicePassword = rs.ServicePassword

@@ -12,7 +12,7 @@ var _ soap.XMLRequest = &GetUniqueIDFromTINRequest{}
 type GetUniqueIDFromTINRequest struct {
 	BaseRequest
 	BaseAuthorizedRequest
-	TIN     int      `xml:"tin"`
+	TIN     string   `xml:"tin"`
 	XMLName xml.Name `xml:"get_un_id_from_tin"`
 }
 
