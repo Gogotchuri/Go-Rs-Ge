@@ -2,6 +2,7 @@ package soap
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -65,7 +66,12 @@ func GenerateSOAPRequest(req XMLRequest) (*http.Request, error) {
 
 //SoapCall make a soap call given formed http request and resp to unmarshall into
 func SoapCall(req *http.Request, dest interface{}) (interface{}, error) {
-	client := &http.Client{}
+	transport := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{
+		Transport: transport,
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
